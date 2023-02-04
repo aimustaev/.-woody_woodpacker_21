@@ -1,32 +1,31 @@
 
 #include "woody.h"
 
-int	main(int argc, char **argv)
+int main(int argc, char **argv)
 {
 
-    t_woody	woody;
+    t_woody woody;
 
     ft_memset(&woody, 0, sizeof(woody));
-    if (parse_argc(argc, argv, &woody)){
+    if (parse_argc(argc, argv, &woody))
+    {
         return (1);
     }
 
-    if (read_elf_file(&woody, argv[argc - 1])){
+    if (read_elf_file(&woody, argv[argc - 1]))
+    {
         return (1);
     }
 
-    if (parse_info(&woody)){
+    if (parse_info(&woody))
+    {
         free(woody.addr);
         return (1);
     }
 
-    if (encrypt_func(&woody)){
+    if (encrypt_func(&woody))
+    {
         free(woody.addr);
         return (1);
     }
-
-
-    // printf("Hello from Woody\n");
-
-
 }
