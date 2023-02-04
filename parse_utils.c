@@ -94,12 +94,6 @@ int parse_info(t_woody *woody)
 	woody->code = get_load_segment(woody);
 	woody->text = get_text_section(woody);
 
-	// ToDo проверяем не был ли файл закондирован ранее, зачем?
-	cryptopoint_start = woody->addr + woody->code->p_offset + woody->code->p_filesz - g_decryptor_len;
-	if (ft_memcmp(cryptopoint_start, g_decryptor, (size_t)(g_decryptor_len - sizeof(t_dset))) == 0)
-	{
-		elf_error(E_UNDER_ENCRYPTION);
-	}
 	if (check_empty_space(woody))
 	{
 		return (1);
