@@ -21,8 +21,10 @@
 #include <sys/time.h>
 #include <stdint.h>
 #include <inttypes.h>
+#include <string.h>
 #include <time.h>
 #include "libft.h"
+#include <errno.h>
 
 #define E_FLAG "Error: wrong flag! Wrong flag is ignored\n"
 #define E_FILE_INVALID "Error: invalid file, must be valid linux elf64\n"
@@ -71,5 +73,6 @@ int parse_argc(int argc, char **argv, t_woody *woody);
 int read_elf_file(t_woody *woody, char *filename);
 int parse_info(t_woody *woody);
 int encrypt_func(t_woody *woody);
+void elf_error(char *err);
 
 #endif

@@ -1,7 +1,7 @@
 NAME 		= woody_woodpacker
 SRCS 		= woody_woodpacker.c \
 				parse_utils.c read_file_utils.c g_decryptor.c \
-				encrypt_func.c
+				encrypt_func.c error.c
 
 OBJS		= $(SRCS:.c=.o)
 LIBFT		= ./libft/libft.a
