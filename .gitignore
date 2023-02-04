@@ -1,0 +1,5 @@
+.vscode/
+*.o
+*.d
+woody_woodpacker
+libft.a
