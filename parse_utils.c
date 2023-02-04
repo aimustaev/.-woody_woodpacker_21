@@ -5,8 +5,7 @@ int parse_argc(int argc, char **argv, t_woody *woody)
 
 	if (argc != 2 && argc != 3)
 	{
-		write(STDERR_FILENO, E_USAGE, ft_strlen(E_USAGE));
-		return (1);
+		elf_error(E_USAGE);
 	}
 
 	if (argc > 2)
@@ -17,8 +16,7 @@ int parse_argc(int argc, char **argv, t_woody *woody)
 		}
 		else
 		{
-			write(STDERR_FILENO, E_FLAG, ft_strlen(E_FLAG));
-			return (1);
+			elf_error(E_FLAG);
 		}
 	}
 	return (0);
@@ -80,8 +78,7 @@ int check_empty_space(t_woody *woody)
 	}
 	if (pos - start < g_decryptor_len)
 	{
-		write(STDERR_FILENO, E_NOSPACE, ft_strlen(E_NOSPACE));
-		return (1);
+		elf_error(E_NOSPACE);
 	}
 	return (0);
 }
@@ -101,8 +98,7 @@ int parse_info(t_woody *woody)
 	cryptopoint_start = woody->addr + woody->code->p_offset + woody->code->p_filesz - g_decryptor_len;
 	if (ft_memcmp(cryptopoint_start, g_decryptor, (size_t)(g_decryptor_len - sizeof(t_dset))) == 0)
 	{
-		write(STDERR_FILENO, E_UNDER_ENCRYPTION, ft_strlen(E_UNDER_ENCRYPTION));
-		return (1);
+		elf_error(E_UNDER_ENCRYPTION);
 	}
 	if (check_empty_space(woody))
 	{

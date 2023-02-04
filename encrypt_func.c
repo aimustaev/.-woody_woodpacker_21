@@ -65,7 +65,7 @@ int write_to_file(t_woody *woody)
 	}
 	else
 	{
-		write(STDERR_FILENO, E_WRITE_WOODY, ft_strlen(E_WRITE_WOODY));
+		elf_error(E_WRITE_WOODY);
 		return (0);
 	}
 	return (i == woody->filesize);
@@ -103,8 +103,7 @@ int encrypt_func(t_woody *woody)
 	change_load_segment(&dset, woody);
 	if (write_to_file(woody) != 1)
 	{
-		write(STDERR_FILENO, E_WRITE_WOODY, ft_strlen(E_WRITE_WOODY));
-		return (1);
+		elf_error(E_WRITE_WOODY);
 	}
 	return (0);
 }

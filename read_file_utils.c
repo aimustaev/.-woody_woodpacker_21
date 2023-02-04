@@ -6,8 +6,7 @@ ssize_t get_file_size(const char *file_name)
 
 	if (!(lstat(file_name, &stat) == 0))
 	{
-		write(STDERR_FILENO, E_OPEN, ft_strlen(E_OPEN));
-		return -1;
+		elf_error(E_OPEN);
 	}
 
 	return stat.st_size;
@@ -19,7 +18,7 @@ int copy_file(t_woody *woody, char *filename)
 
 	if (fd < 0)
 	{
-		write(STDERR_FILENO, E_OPEN, ft_strlen(E_OPEN));
+		elf_error(E_OPEN);
 		return (1);
 	}
 
@@ -27,7 +26,7 @@ int copy_file(t_woody *woody, char *filename)
 	{
 		close(fd);
 		free(woody->addr);
-		write(STDERR_FILENO, E_COPY, ft_strlen(E_COPY));
+		elf_error(E_COPY);
 		return (1);
 	}
 
@@ -48,8 +47,7 @@ int check_fileformat(unsigned char *c)
 	}
 	else
 	{
-		write(STDERR_FILENO, E_FILE_INVALID, ft_strlen(E_FILE_INVALID));
-		return (1);
+		elf_error(E_FILE_INVALID);
 	}
 }
 
@@ -61,8 +59,7 @@ int read_elf_file(t_woody *woody, char *filename)
 	woody->addr = malloc(woody->filesize);
 	if (woody->addr == NULL)
 	{
-		write(STDERR_FILENO, E_MALLOC, ft_strlen(E_MALLOC));
-		return (1);
+		elf_error(E_MALLOC);
 	}
 
 	if (copy_file(woody, filename))
