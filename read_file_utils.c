@@ -1,19 +1,27 @@
 #include "woody.h"
 
 ssize_t get_file_size(const char* file_name){
-	ssize_t _file_size = 0;
-	FILE* fd = fopen(file_name, "rb");
-	if(fd == NULL){
+	struct stat	stat;
+
+	if(!(lstat(file_name, &stat) == 0)){
 		write(STDERR_FILENO, E_OPEN, ft_strlen(E_OPEN));
-		_file_size = -1;
+		return -1;
 	}
-	else{
-		while(getc(fd) != EOF){
-			_file_size++;
-		}
-		fclose(fd);
+
+	return stat.st_size;
+}
+
+ssize_t get_file_size2(const char* file_name){
+	struct stat	stat;
+
+	if(!(lstat(file_name, &stat))){
+		
+		write(STDERR_FILENO, E_OPEN, ft_strlen(E_OPEN));
+		return -1;
 	}
-	return _file_size;
+	
+	
+	return stat.st_size;
 }
 
 int copy_file(t_woody *woody, char *filename){
@@ -75,5 +83,3 @@ int read_elf_file(t_woody *woody, char *filename){
 	}
     return (0);
 }
-
-    // printf("filesize = %ld\n", woody->filesize);
