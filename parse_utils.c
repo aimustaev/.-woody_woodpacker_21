@@ -22,13 +22,12 @@ Elf64_Phdr	*get_load_segment(t_woody *woody)
 {
 	if (!woody->ehdr->e_phoff || !woody->ehdr->e_phnum)
 		return (NULL);
+	
 	for (int i = 0; i < woody->ehdr->e_phnum; i++)
 	{
 		if (woody->segments[i].p_type == PT_LOAD && \
 			woody->segments[i].p_vaddr <= woody->ehdr->e_entry && \
-			woody->segments[i].p_vaddr + woody->segments[i].p_memsz > woody->ehdr->e_entry && \
-			woody->segments[i].p_vaddr == woody->segments[i].p_paddr && \
-			woody->segments[i].p_memsz == woody->segments[i].p_filesz){
+			woody->segments[i].p_vaddr + woody->segments[i].p_memsz > woody->ehdr->e_entry){
 			return (&woody->segments[i]);
 		}
 	}
@@ -37,16 +36,19 @@ Elf64_Phdr	*get_load_segment(t_woody *woody)
 
 Elf64_Shdr	*get_text_section(t_woody *woody)
 {
-	char	*all_sections_names;
+	char	*str_table;
 
-	all_sections_names = NULL;
+	str_table = NULL;
 	if (!woody->ehdr->e_shoff || !woody->ehdr->e_shnum || \
 		woody->ehdr->e_shstrndx >= woody->ehdr->e_shnum) {
 		return (NULL);
         }
-	all_sections_names = (char *)woody->addr + woody->sections[woody->ehdr->e_shstrndx].sh_offset;
-	for (int i = 0; i < woody->ehdr->e_shnum; i++){
-		if (ft_strncmp(".text", all_sections_names + woody->sections[i].sh_name, 6) == 0 && \
+
+	str_table = (char *)woody->addr + woody->sections[woody->ehdr->e_shstrndx].sh_offset;
+	for (int i = 0; i < woody->ehdr->e_shnum; i++) {
+		char *section_name = str_table + woody->sections[i].sh_name;
+
+		if (ft_strncmp(".text", section_name, 6) == 0 && \
 			(woody->sections[i].sh_type == SHT_PROGBITS) && \
 			(woody->sections[i].sh_flags & SHF_EXECINSTR)){
 			return (&woody->sections[i]);

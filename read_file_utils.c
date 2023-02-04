@@ -11,21 +11,9 @@ ssize_t get_file_size(const char* file_name){
 	return stat.st_size;
 }
 
-ssize_t get_file_size2(const char* file_name){
-	struct stat	stat;
-
-	if(!(lstat(file_name, &stat))){
-		
-		write(STDERR_FILENO, E_OPEN, ft_strlen(E_OPEN));
-		return -1;
-	}
-	
-	
-	return stat.st_size;
-}
-
 int copy_file(t_woody *woody, char *filename){
 	int fd = open(filename, O_RDONLY);
+	
 	if(fd < 0){
 		write(STDERR_FILENO, E_OPEN, ft_strlen(E_OPEN));
 		return (1);
@@ -38,6 +26,7 @@ int copy_file(t_woody *woody, char *filename){
 		write(STDERR_FILENO, E_COPY,  ft_strlen(E_COPY));
 		return (1);
 	}
+
 	close(fd);
 	return (0);
 }
@@ -60,11 +49,6 @@ int check_fileformat(unsigned char *c)
 int read_elf_file(t_woody *woody, char *filename){
 
     woody->filesize = get_file_size(filename);
-    //ToDo откуда ноги растут?
-	if (woody->filesize < (long)(sizeof(Elf64_Ehdr) + sizeof(Elf64_Phdr) + sizeof(Elf64_Shdr))){
-		write(STDERR_FILENO, E_FILE_INVALID, ft_strlen(E_FILE_INVALID));
-		return (1);
-    }
 
 	woody->addr = malloc(woody->filesize);
 	if (woody->addr == NULL){

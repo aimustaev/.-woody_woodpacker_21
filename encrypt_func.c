@@ -1,27 +1,15 @@
 #include "woody.h"
 
-uint64_t generate_key(){
-    int			fd;
-    uint64_t    key;
-    int			len;
-    long long    bar = 0;
+uint64_t generate_key() {
+	uint64_t    key;
 
-    fd = open("/dev/urandom", O_RDONLY);
-    if (fd < 0){
-        write(STDERR_FILENO, E_KEY_GENERATOR, ft_strlen(E_KEY_GENERATOR));
-        return (1);
+    for(int i = 0; i < 8; ++i) {
+ 		clock_t tic = clock();
+		key = (key * 10) + (tic % 9);
     }
-    while (bar == 0 || bar < 0){
-        if (read(fd, &bar, 8) == 0) {
-            write(STDERR_FILENO, E_KEY_GENERATOR, ft_strlen(E_KEY_GENERATOR));
-            return (1);
-        }
-        key = (u_int64_t) bar;
-    }
-    close(fd);
-    return(key);
+
+	return key;
 }
-
 // char* random_key(){
 //     char    key[16];
 //     int i;
