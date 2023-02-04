@@ -61,6 +61,7 @@ int write_to_file(t_woody *woody)
 			write(fd, woody->addr + i, 1);
 			++i;
 		}
+
 		close(fd);
 	}
 	else
