@@ -1,6 +1,6 @@
 #include "woody.h"
 
-int parse_argc(int argc, char **argv, t_woody *woody)
+void parse_argc(int argc, char **argv, t_woody *woody)
 {
 
 	if (argc != 2 && argc != 3)
@@ -19,7 +19,6 @@ int parse_argc(int argc, char **argv, t_woody *woody)
 			elf_error(E_FLAG);
 		}
 	}
-	return (0);
 }
 
 Elf64_Phdr *get_load_segment(t_woody *woody)
@@ -65,7 +64,7 @@ Elf64_Shdr *get_text_section(t_woody *woody)
 	return (NULL);
 }
 
-int check_empty_space(t_woody *woody)
+void check_empty_space(t_woody *woody)
 {
 	void *start;
 	void *pos;
@@ -76,14 +75,14 @@ int check_empty_space(t_woody *woody)
 	{
 		++pos;
 	}
+
 	if (pos - start < g_decryptor_len)
 	{
 		elf_error(E_NOSPACE);
 	}
-	return (0);
 }
 
-int parse_info(t_woody *woody)
+void parse_info(t_woody *woody)
 {
 
 	void *cryptopoint_start;
@@ -94,9 +93,5 @@ int parse_info(t_woody *woody)
 	woody->code = get_load_segment(woody);
 	woody->text = get_text_section(woody);
 
-	if (check_empty_space(woody))
-	{
-		return (1);
-	}
-	return (0);
+	check_empty_space(woody);
 }

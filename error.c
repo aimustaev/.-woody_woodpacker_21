@@ -14,6 +14,6 @@
 
 void elf_error(char *err)
 {
-    printf("%s", err);
+    write(STDERR_FILENO, err, ft_strlen(err));
     exit(1);
 }

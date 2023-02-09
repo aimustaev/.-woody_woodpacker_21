@@ -81,7 +81,7 @@ uint64_t set_new_entry(t_woody *woody)
 	return (ehdr->e_entry);
 }
 
-int encrypt_func(t_woody *woody)
+void encrypt_func(t_woody *woody)
 {
 
 	t_dset dset;
@@ -90,11 +90,6 @@ int encrypt_func(t_woody *woody)
 	data = woody->addr + woody->text->sh_offset;
 
 	dset.key = generate_key();
-	if (dset.key == 1)
-	{
-		return (1);
-	}
-
 	dset.original_entry = woody->ehdr->e_entry;
 	dset.encrypted_code = woody->text->sh_addr;
 	dset.encrypted_size = woody->text->sh_size;
@@ -106,5 +101,4 @@ int encrypt_func(t_woody *woody)
 	{
 		elf_error(E_WRITE_WOODY);
 	}
-	return (0);
 }
