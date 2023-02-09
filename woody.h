@@ -6,7 +6,7 @@
 /*   By: aimustaev <aimustaev@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:22:33 by Jraye             #+#    #+#             */
-/*   Updated: 2023/02/09 22:13:51 by aimustaev        ###   ########.fr       */
+/*   Updated: 2023/02/09 22:14:32 by aimustaev        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@
 #include "libft.h"
 #include <errno.h>
 
-#define E_TITLE "\033[31mERROR\033[0m"
+#define E_TITLE "\033[31mERROR:\033[0m "
 #define E_FLAG "wrong flag! Wrong flag is ignored\n"
 #define E_FILE_INVALID "invalid file, must be valid linux elf64\n"
 #define E_NOSPACE "could not find space for decryptor\n"
