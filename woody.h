@@ -6,7 +6,7 @@
 /*   By: aimustaev <aimustaev@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:22:33 by Jraye             #+#    #+#             */
-/*   Updated: 2023/02/09 22:04:13 by aimustaev        ###   ########.fr       */
+/*   Updated: 2023/02/09 22:13:51 by aimustaev        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,18 +26,19 @@
 #include "libft.h"
 #include <errno.h>
 
-#define E_FLAG "Error: wrong flag! Wrong flag is ignored\n"
-#define E_FILE_INVALID "Error: invalid file, must be valid linux elf64\n"
-#define E_NOSPACE "Error: could not find space for decryptor\n"
-#define E_COPY "Error: failed to copy info from input file\n"
-#define E_LSEEK "Error: failed to lseek the size of input file\n"
-#define E_MALLOC "Error: failed to do malloc()\n"
-#define E_OPEN "Error: failed to open input file\n"
-#define E_READ "Error: failed to read input file\n"
-#define E_UNDER_ENCRYPTION "Error: wrong binary file! Binary file is already under our encryption\n"
+#define E_TITLE "\033[31mERROR\033[0m"
+#define E_FLAG "wrong flag! Wrong flag is ignored\n"
+#define E_FILE_INVALID "invalid file, must be valid linux elf64\n"
+#define E_NOSPACE "could not find space for decryptor\n"
+#define E_COPY "failed to copy info from input file\n"
+#define E_LSEEK "failed to lseek the size of input file\n"
+#define E_MALLOC "failed to do malloc()\n"
+#define E_OPEN "failed to open input file\n"
+#define E_READ "failed to read input file\n"
+#define E_UNDER_ENCRYPTION "wrong binary file! Binary file is already under our encryption\n"
 #define E_USAGE "Wrong syntax. Correct way is to type: ./woody_woodpacker ./path/binary or ./woody_woodpacker -i ./path/binary\n"
-#define E_WRITE_WOODY "Error: could not write to 'woody' file\n"
-#define E_KEY_GENERATOR "Error: key generator exception, try again\n"
+#define E_WRITE_WOODY "could not write to 'woody' file\n"
+#define E_KEY_GENERATOR "key generator exception, try again\n"
 
 #define KEY_FORMAT "key_value: %#.16llx\n"
 #define CHUNK 4096
