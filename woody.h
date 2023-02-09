@@ -6,7 +6,7 @@
 /*   By: aimustaev <aimustaev@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:22:33 by Jraye             #+#    #+#             */
-/*   Updated: 2023/02/09 22:15:23 by aimustaev        ###   ########.fr       */
+/*   Updated: 2023/02/09 22:18:37 by aimustaev        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ typedef struct s_decryption_set
 	uint64_t original_entry;
 	uint64_t encrypted_code;
 	uint64_t encrypted_size;
-	char 	*key;
+	uint64_t key;
 	uint64_t encrypted_entry;
 } t_dset;
 
@@ -67,7 +67,7 @@ typedef struct s_woody
 	int logs_fd;
 	char i_flag;
 	int res;
-	char *key;
+	uint64_t key;
 } t_woody;
 
 void parse_argc(int argc, char **argv, t_woody *woody);
