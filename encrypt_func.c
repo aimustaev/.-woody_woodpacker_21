@@ -29,11 +29,13 @@ int change_load_segment(t_dset *dset, t_woody *woody)
 	return (0);
 }
 
-void encrypt_text_section(size_t size, void *data, uint64_t key)
+void encrypt_text_section(t_woody *woody, void *data, uint64_t key)
 {
+	size_t size;
 	uint64_t key_copy; // unsigned long long // 8 bite (64 bits)
 	uint64_t value;
 
+	size = woody->text->sh_size;
 	key_copy = key;
 	for (size_t i = 0; i < size; i++)
 	{
@@ -43,8 +45,27 @@ void encrypt_text_section(size_t size, void *data, uint64_t key)
 		key = (key / 2) | value;														  // key = (key >> 1) | value;
 	}
 
+	if(woody->i_flag){
+		printf("\033[32mKEY:\033[0m ");
+	} else {
+		printf("\033[33mKEY:\033[0m ");
+	}
 	printf(KEY_FORMAT, (long long)key_copy);
+	
 	printf("File create: woody\n");
+}
+
+uint64_t random_key(){
+    uint64_t    key = 0;
+    int i;
+
+    srand(time(NULL));
+    for (i = 0; i < 16; i++){
+        key = (random() % 10) + key * 10;        
+    }
+    
+	return key;
+
 }
 
 int write_to_file(t_woody *woody)
@@ -89,13 +110,19 @@ void encrypt_func(t_woody *woody)
 
 	data = woody->addr + woody->text->sh_offset;
 
-	dset.key = generate_key();
+
+	if(woody->i_flag){
+		dset.key = random_key();
+	} else {
+		dset.key = generate_key();
+	}
+
 	dset.original_entry = woody->ehdr->e_entry;
 	dset.encrypted_code = woody->text->sh_addr;
 	dset.encrypted_size = woody->text->sh_size;
 	dset.encrypted_entry = set_new_entry(woody);
 
-	encrypt_text_section(woody->text->sh_size, data, dset.key);
+	encrypt_text_section(woody, data, dset.key);
 	change_load_segment(&dset, woody);
 	if (write_to_file(woody) != 1)
 	{

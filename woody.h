@@ -40,7 +40,7 @@
 #define E_WRITE_WOODY "could not write to 'woody' file\n"
 #define E_KEY_GENERATOR "key generator exception, try again\n"
 
-#define KEY_FORMAT "key_value: %#.16llx\n"
+#define KEY_FORMAT "%#.16llx\n"
 #define CHUNK 4096
 
 extern unsigned char g_decryptor[];
