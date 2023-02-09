@@ -6,7 +6,7 @@
 /*   By: aimustaev <aimustaev@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:22:33 by Jraye             #+#    #+#             */
-/*   Updated: 2023/02/05 01:19:09 by aimustaev        ###   ########.fr       */
+/*   Updated: 2023/02/09 22:04:13 by aimustaev        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,10 @@ typedef struct s_woody
 	uint64_t key;
 } t_woody;
 
-int parse_argc(int argc, char **argv, t_woody *woody);
-int read_elf_file(t_woody *woody, char *filename);
-int parse_info(t_woody *woody);
-int encrypt_func(t_woody *woody);
+void parse_argc(int argc, char **argv, t_woody *woody);
+void read_elf_file(t_woody *woody, char *filename);
+void parse_info(t_woody *woody);
+void encrypt_func(t_woody *woody);
 void elf_error(char *err);
 
 #endif

@@ -12,14 +12,13 @@ ssize_t get_file_size(const char *file_name)
 	return stat.st_size;
 }
 
-int copy_file(t_woody *woody, char *filename)
+void copy_file(t_woody *woody, char *filename)
 {
 	int fd = open(filename, O_RDONLY);
 
 	if (fd < 0)
 	{
 		elf_error(E_OPEN);
-		return (1);
 	}
 
 	if (read(fd, woody->addr, woody->filesize) != woody->filesize)
@@ -27,14 +26,12 @@ int copy_file(t_woody *woody, char *filename)
 		close(fd);
 		free(woody->addr);
 		elf_error(E_COPY);
-		return (1);
 	}
 
 	close(fd);
-	return (0);
 }
 
-int check_fileformat(unsigned char *c)
+void check_fileformat(unsigned char *c)
 {
 	if (c[0] == 0x7f &&
 		c[1] == 'E' &&
@@ -43,7 +40,7 @@ int check_fileformat(unsigned char *c)
 		c[4] == ELFCLASS64 &&
 		(c[16] == ET_EXEC || c[16] == ET_DYN))
 	{
-		return (0);
+		return;
 	}
 	else
 	{
@@ -51,7 +48,7 @@ int check_fileformat(unsigned char *c)
 	}
 }
 
-int read_elf_file(t_woody *woody, char *filename)
+void read_elf_file(t_woody *woody, char *filename)
 {
 
 	woody->filesize = get_file_size(filename);
@@ -62,16 +59,7 @@ int read_elf_file(t_woody *woody, char *filename)
 		elf_error(E_MALLOC);
 	}
 
-	if (copy_file(woody, filename))
-	{
-		free(woody->addr);
-		return (1);
-	}
+	copy_file(woody, filename);
 
-	if (check_fileformat(woody->addr))
-	{
-		free(woody->addr);
-		return (1);
-	}
-	return (0);
+	check_fileformat(woody->addr);
 }
