@@ -2,26 +2,29 @@
 
 void parse_argc(int argc, char **argv, t_woody *woody)
 {
-
-	if (argc != 2 && argc != 3)
-	{
-		elf_error(E_USAGE);
-	}
-
 	if (argc > 2)
 	{
-		if (ft_strcmp(argv[1], "-i") == 0)
+		if (ft_strcmp(argv[1], "-i") == 0 && argc == 3)
 		{
 			woody->i_flag = 1;
 		}
-		else if (ft_strcmp(argv[1], "-k") == 0)
+		else if (ft_strcmp(argv[1], "-k") == 0 && argc == 3)
 		{
 			woody->k_flag = 1;
 		}
+		else if (ft_strcmp(argv[1], "-key" == 0) && argc == 4)
+		{
+			woody->key_flag = 1;
+			woody->key_user = ft_atoi(argv[2]);
+		}
 		else
 		{
-			elf_error(E_FLAG);
+			elf_error(E_USAGE);
 		}
+	}
+	else if (argc != 2)
+	{
+		elf_error(E_USAGE);
 	}
 }
 

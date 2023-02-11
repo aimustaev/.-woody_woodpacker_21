@@ -6,7 +6,7 @@
 /*   By: aimustaev <aimustaev@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:22:33 by Jraye             #+#    #+#             */
-/*   Updated: 2023/02/11 21:45:17 by aimustaev        ###   ########.fr       */
+/*   Updated: 2023/02/11 21:56:44 by aimustaev        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ typedef struct s_woody
 	int logs_fd;
 	int i_flag; // флаг i - соот random_key
 	int k_flag; // флаг k - соот generate_urandom_key
+	int key_flag;
+	uint64_t key_user;
 	int res;
 	uint64_t key;
 } t_woody;

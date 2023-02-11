@@ -79,6 +79,10 @@ void encrypt_text_section(t_woody *woody, void *data, uint64_t key)
 	{
 		printf("\033[36mKEY:\033[0m ");
 	}
+	else if (woody->key_flag)
+	{
+		printf("\033[43mKEY:\033[0m ");
+	}
 	else
 	{
 		printf("\033[33mKEY:\033[0m ");
@@ -151,6 +155,10 @@ void encrypt_func(t_woody *woody)
 	else if (woody->k_flag)
 	{
 		dset.key = generate_urandom_key();
+	}
+	else if (woody->key_flag)
+	{
+		dset.key = woody->key_user;
 	}
 	else
 	{
