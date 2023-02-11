@@ -12,7 +12,7 @@ void parse_argc(int argc, char **argv, t_woody *woody)
 		{
 			woody->k_flag = 1;
 		}
-		else if (ft_strcmp(argv[1], "-key" == 0) && argc == 4)
+		else if (ft_strcmp(argv[1], "-key") == 0 && argc == 4)
 		{
 			woody->key_flag = 1;
 			woody->key_user = ft_atoi(argv[2]);
