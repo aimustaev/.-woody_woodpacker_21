@@ -12,11 +12,11 @@ void parse_argc(int argc, char **argv, t_woody *woody)
 	{
 		if (ft_strcmp(argv[1], "-i") == 0)
 		{
-			woody->i_flag = true;
+			woody->i_flag = 1;
 		}
 		else if (ft_strcmp(argv[1], "-k") == 0)
 		{
-			woody->k_flag = true;
+			woody->k_flag = 1;
 		}
 		else
 		{

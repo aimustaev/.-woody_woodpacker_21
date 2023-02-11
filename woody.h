@@ -65,8 +65,8 @@ typedef struct s_woody
 	Elf64_Shdr *text;
 	Elf64_Shdr *sections;
 	int logs_fd;
-	bool i_flag; // флаг i - соот random_key
-	bool k_flag; // флаг k - соот generate_urandom_key
+	int i_flag; // флаг i - соот random_key
+	int k_flag; // флаг k - соот generate_urandom_key
 	int res;
 	uint64_t key;
 } t_woody;
