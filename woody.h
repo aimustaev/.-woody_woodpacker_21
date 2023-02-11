@@ -6,7 +6,7 @@
 /*   By: aimustaev <aimustaev@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 17:22:33 by Jraye             #+#    #+#             */
-/*   Updated: 2023/02/09 22:18:37 by aimustaev        ###   ########.fr       */
+/*   Updated: 2023/02/11 21:45:17 by aimustaev        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ typedef struct s_woody
 	Elf64_Shdr *text;
 	Elf64_Shdr *sections;
 	int logs_fd;
-	char i_flag;
+	bool i_flag; // флаг i - соот random_key
+	bool k_flag; // флаг k - соот generate_urandom_key
 	int res;
 	uint64_t key;
 } t_woody;
