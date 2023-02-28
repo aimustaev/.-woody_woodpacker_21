@@ -13,31 +13,31 @@ uint64_t generate_key()
 	return key;
 }
 
-uint64_t generate_urandom_key()
-{
-	int fd;
-	uint64_t key;
-	int len;
-	long long bar = 0;
+// uint64_t generate_urandom_key()
+// {
+// 	int fd;
+// 	uint64_t key;
+// 	int len;
+// 	long long bar = 0;
 
-	fd = open("/dev/urandom", O_RDONLY);
-	if (fd < 0)
-	{
-		elf_error(E_KEY_GENERATOR);
-	}
+// 	fd = open("/dev/urandom", O_RDONLY);
+// 	if (fd < 0)
+// 	{
+// 		elf_error(E_KEY_GENERATOR);
+// 	}
 
-	while (bar == 0 || bar < 0)
-	{
-		if (read(fd, &bar, 8) == 0)
-		{
-			elf_error(E_KEY_GENERATOR);
-		}
-		key = (u_int64_t)bar;
-	}
+// 	while (bar == 0 || bar < 0)
+// 	{
+// 		if (read(fd, &bar, 8) == 0)
+// 		{
+// 			elf_error(E_KEY_GENERATOR);
+// 		}
+// 		key = (u_int64_t)bar;
+// 	}
 
-	close(fd);
-	return (key);
-}
+// 	close(fd);
+// 	return (key);
+// }
 
 int change_load_segment(t_dset *dset, t_woody *woody)
 {
@@ -110,8 +110,8 @@ int write_to_file(t_woody *woody)
 {
 	int fd;
 	ssize_t i;
-
-	fd = open("woody", O_WRONLY | O_CREAT | O_TRUNC, 0755);
+	printf("%s", woody->filename);
+	fd = open(ft_strjoin(woody->filename, "_woody"), O_WRONLY | O_CREAT | O_TRUNC, 0755);
 	if (fd > 0)
 	{
 		i = 0;
@@ -125,8 +125,7 @@ int write_to_file(t_woody *woody)
 	}
 	else
 	{
-		elf_error(E_WRITE_WOODY);
-		return (0);
+		return elf_error(E_WRITE_WOODY);
 	}
 	return (i == woody->filesize);
 }
@@ -140,7 +139,7 @@ uint64_t set_new_entry(t_woody *woody)
 	return (ehdr->e_entry);
 }
 
-void encrypt_func(t_woody *woody)
+int encrypt_func(t_woody *woody)
 {
 
 	t_dset dset;
@@ -152,10 +151,10 @@ void encrypt_func(t_woody *woody)
 	{
 		dset.key = random_key();
 	}
-	else if (woody->k_flag)
-	{
-		dset.key = generate_urandom_key();
-	}
+	// else if (woody->k_flag)
+	// {
+	// 	dset.key = generate_urandom_key();
+	// }
 	else if (woody->key_flag)
 	{
 		dset.key = woody->key_user;
@@ -171,9 +170,10 @@ void encrypt_func(t_woody *woody)
 	dset.encrypted_entry = set_new_entry(woody);
 
 	encrypt_text_section(woody, data, dset.key);
-	change_load_segment(&dset, woody);
+	change_load_segment(&dset, woody); 
 	if (write_to_file(woody) != 1)
 	{
-		elf_error(E_WRITE_WOODY);
+		return elf_error(E_WRITE_WOODY);
 	}
+	return 0;
 }

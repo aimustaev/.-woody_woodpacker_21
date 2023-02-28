@@ -12,9 +12,10 @@
 
 #include "woody.h"
 
-void elf_error(char *err)
+int elf_error(char *err)
 {
     write(STDERR_FILENO, E_TITLE, ft_strlen(E_TITLE));
     write(STDERR_FILENO, err, ft_strlen(err));
-    exit(1);
+    return ERROR_CODE;
+    // exit(1);
 }

@@ -4,17 +4,49 @@
 int main(int argc, char **argv)
 {
 
-    t_woody woody;
+    DIR *dir;
+    struct dirent *ent;
+    if ((dir = opendir("/tmp/test")) != NULL)
+    {
+        /* print all the files and directories within directory */
+        while ((ent = readdir(dir)) != NULL)
+        {
+            printf("%s\n", ft_strjoin("/tmp/test/", ent->d_name));
+            if (ft_strcmp(ent->d_name, ".") != 0 && ft_strcmp(ent->d_name, "..") != 0)
+            {
+                printf("init\n");
+                t_woody woody;
+                ft_memset(&woody, 0, sizeof(woody));
+                printf("read\n");
+                if (read_elf_file(&woody, ft_strjoin("/tmp/test/", ent->d_name)) == ERROR_CODE)
+                {
+                    // free(woody.addr);
+                    continue;
+                }
+                printf("parse\n");
+                if (parse_info(&woody) == ERROR_CODE)
+                {
+                    free(woody.addr);
+                    continue;
+                }
 
-    ft_memset(&woody, 0, sizeof(woody));
-    parse_argc(argc, argv, &woody);
+                    printf("encrypt_func\n");
+                if (encrypt_func(&woody) == ERROR_CODE)
+                {
+                    free(woody.addr);
+                    continue;
+                }
 
-    read_elf_file(&woody, argv[argc - 1]);
-
-    parse_info(&woody);
-
-    encrypt_func(&woody);
-
-    free(woody.addr);
+                free(woody.addr);
+            }
+        }
+        closedir(dir);
+    }
+    else
+    {
+        /* could not open directory */
+        perror("");
+        return EXIT_FAILURE;
+    }
     return (0);
 }

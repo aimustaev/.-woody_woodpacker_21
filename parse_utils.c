@@ -36,8 +36,10 @@ Elf64_Phdr *get_load_segment(t_woody *woody)
 	for (int i = 0; i < woody->ehdr->e_phnum; i++)
 	{
 		if (woody->segments[i].p_type == PT_LOAD &&
-			woody->segments[i].p_vaddr <= woody->ehdr->e_entry &&
-			woody->segments[i].p_vaddr + woody->segments[i].p_memsz > woody->ehdr->e_entry)
+			woody->segments[i].p_vaddr <= woody->ehdr->e_entry
+			 &&
+			woody->segments[i].p_vaddr + woody->segments[i].p_memsz > woody->ehdr->e_entry
+			)
 		{
 			return (&woody->segments[i]);
 		}
@@ -71,25 +73,26 @@ Elf64_Shdr *get_text_section(t_woody *woody)
 	return (NULL);
 }
 
-void check_empty_space(t_woody *woody)
+int check_empty_space(t_woody *woody)
 {
 	void *start;
 	void *pos;
 
+	printf("check_empty_space %p\n", woody->code);
 	start = woody->addr + woody->code->p_offset + woody->code->p_filesz;
 	pos = start;
 	while (pos < (woody->addr + woody->filesize) && *(unsigned char *)pos == 0)
 	{
 		++pos;
 	}
-
 	if (pos - start < g_decryptor_len)
 	{
-		elf_error(E_NOSPACE);
+		return elf_error(E_NOSPACE);
 	}
+	return 0;
 }
 
-void parse_info(t_woody *woody)
+int parse_info(t_woody *woody)
 {
 
 	void *cryptopoint_start;
@@ -99,6 +102,6 @@ void parse_info(t_woody *woody)
 	woody->sections = (Elf64_Shdr *)(woody->addr + woody->ehdr->e_shoff);
 	woody->code = get_load_segment(woody);
 	woody->text = get_text_section(woody);
-
-	check_empty_space(woody);
+	printf("get_load_segment\n");
+	return check_empty_space(woody);
 }
