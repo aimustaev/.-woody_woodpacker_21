@@ -1,4 +1,4 @@
-#include "woody.h"
+#include "famine.h"
 
 Elf64_Phdr *get_load_segment(t_woody *woody)
 {
@@ -39,9 +39,6 @@ Elf64_Shdr *get_text_section(t_woody *woody)
 			(woody->sections[i].sh_type == SHT_PROGBITS) &&
 			(woody->sections[i].sh_flags & SHF_EXECINSTR))
 		{
-			// char * string = woody->sections[i].sh_addr;
-			// printf("string = %s", string);
-			// printf("woody->sections text: %s", woody->sections[i]);
 			return (&woody->sections[i]);
 		}
 	}
@@ -61,7 +58,7 @@ int check_empty_space(t_woody *woody)
 	}
 	if (pos - start < g_decryptor_len)
 	{
-		return elf_error(E_NOSPACE);
+		return ERROR_CODE;
 	}
 	return 0;
 }

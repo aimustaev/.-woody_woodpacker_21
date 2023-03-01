@@ -1,7 +1,7 @@
-NAME 		= woody_woodpacker
-SRCS 		= woody_woodpacker.c \
+NAME 		= Famine
+SRCS 		= famine.c \
 				parse_utils.c read_file_utils.c g_decryptor.c \
-				encrypt_func.c error.c
+				encrypt_func.c
 
 OBJS		= $(SRCS:.c=.o)
 LIBFT		= ./libft/libft.a
@@ -42,6 +42,3 @@ run:		$(NAME)
 			./$(NAME)
 
 .PHONY: 	all clean fclean re run norm
-
-
-# nasm -f bin inject.s -o g_decryptor

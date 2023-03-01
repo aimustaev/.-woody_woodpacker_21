@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   woody.h                                            :+:      :+:    :+:   */
+/*   famine.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aimustaev <aimustaev@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef WOODY_H
-#define WOODY_H
+#ifndef FAMINE_H
+#define FAMINE_H
 #include <elf.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -85,7 +85,6 @@ typedef struct s_woody
 void parse_argc(int argc, char **argv, t_woody *woody);
 int read_elf_file(t_woody *woody, char *filename);
 int parse_info(t_woody *woody);
-int encrypt_func(t_woody *woody);
-int elf_error(char *err);
+int encrypt_func(t_woody *woody, char* filename);
 
 #endif

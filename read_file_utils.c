@@ -1,4 +1,4 @@
-#include "woody.h"
+#include "famine.h"
 
 ssize_t get_file_size(const char *file_name)
 {
@@ -6,7 +6,7 @@ ssize_t get_file_size(const char *file_name)
 
 	if (!(lstat(file_name, &stat) == 0))
 	{
-		return elf_error(E_OPEN);
+		return ERROR_CODE;
 	}
 
 	return stat.st_size;
@@ -18,14 +18,14 @@ int copy_file(t_woody *woody, char *filename)
 
 	if (fd < 0)
 	{
-		return elf_error(E_OPEN);
+		return ERROR_CODE;
 	}
 
 	if (read(fd, woody->addr, woody->filesize) != woody->filesize)
 	{
 		close(fd);
 		// free(woody->addr);
-		return elf_error(E_COPY);
+		return ERROR_CODE;
 	}
 	char * string = woody->addr;
 	for (int i = 0; i < woody->filesize; i++){
@@ -35,7 +35,6 @@ int copy_file(t_woody *woody, char *filename)
 		}
 	}
 	close(fd);
-	remove(filename);
 	return 0;
 }
 
@@ -52,7 +51,7 @@ int check_fileformat(unsigned char *c)
 	}
 	else
 	{
-		return elf_error(E_FILE_INVALID);
+		return ERROR_CODE;
 	}
 }
 
@@ -67,7 +66,7 @@ int read_elf_file(t_woody *woody, char *filename)
 	woody->addr = malloc(woody->filesize);
 	if (woody->addr == NULL)
 	{
-		return elf_error(E_MALLOC);
+		return ERROR_CODE;
 	}
 
 	if(copy_file(woody, filename) == ERROR_CODE){

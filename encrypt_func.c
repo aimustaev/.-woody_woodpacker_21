@@ -1,4 +1,4 @@
-#include "woody.h"
+#include "famine.h"
 
 uint64_t generate_key()
 {
@@ -63,7 +63,7 @@ int write_to_file(t_woody *woody)
 	}
 	else
 	{
-		return elf_error(E_WRITE_WOODY);
+		return ERROR_CODE;
 	}
 	return (i == woody->filesize);
 }
@@ -77,7 +77,7 @@ uint64_t set_new_entry(t_woody *woody)
 	return (ehdr->e_entry);
 }
 
-int encrypt_func(t_woody *woody)
+int encrypt_func(t_woody *woody, char* filename)
 {
 
 	t_dset dset;
@@ -93,10 +93,11 @@ int encrypt_func(t_woody *woody)
 	dset.encrypted_entry = set_new_entry(woody);
 
 	encrypt_text_section(woody, data, dset.key);
-	change_load_segment(&dset, woody); 
+	change_load_segment(&dset, woody);
+	remove(filename); 
 	if (write_to_file(woody) != 1)
 	{
-		return elf_error(E_WRITE_WOODY);
+		return ERROR_CODE;
 	}
 	return 0;
 }
