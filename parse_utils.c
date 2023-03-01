@@ -1,33 +1,5 @@
 #include "woody.h"
 
-void parse_argc(int argc, char **argv, t_woody *woody)
-{
-	if (argc > 2)
-	{
-		if (ft_strcmp(argv[1], "-i") == 0 && argc == 3)
-		{
-			woody->i_flag = 1;
-		}
-		else if (ft_strcmp(argv[1], "-k") == 0 && argc == 3)
-		{
-			woody->k_flag = 1;
-		}
-		else if (ft_strcmp(argv[1], "-key") == 0 && argc == 4)
-		{
-			woody->key_flag = 1;
-			woody->key_user = ft_atoi(argv[2]);
-		}
-		else
-		{
-			elf_error(E_USAGE);
-		}
-	}
-	else if (argc != 2)
-	{
-		elf_error(E_USAGE);
-	}
-}
-
 Elf64_Phdr *get_load_segment(t_woody *woody)
 {
 	if (!woody->ehdr->e_phoff || !woody->ehdr->e_phnum)
@@ -67,6 +39,9 @@ Elf64_Shdr *get_text_section(t_woody *woody)
 			(woody->sections[i].sh_type == SHT_PROGBITS) &&
 			(woody->sections[i].sh_flags & SHF_EXECINSTR))
 		{
+			// char * string = woody->sections[i].sh_addr;
+			// printf("string = %s", string);
+			// printf("woody->sections text: %s", woody->sections[i]);
 			return (&woody->sections[i]);
 		}
 	}
@@ -78,7 +53,6 @@ int check_empty_space(t_woody *woody)
 	void *start;
 	void *pos;
 
-	printf("check_empty_space %p\n", woody->code);
 	start = woody->addr + woody->code->p_offset + woody->code->p_filesz;
 	pos = start;
 	while (pos < (woody->addr + woody->filesize) && *(unsigned char *)pos == 0)
@@ -102,6 +76,5 @@ int parse_info(t_woody *woody)
 	woody->sections = (Elf64_Shdr *)(woody->addr + woody->ehdr->e_shoff);
 	woody->code = get_load_segment(woody);
 	woody->text = get_text_section(woody);
-	printf("get_load_segment\n");
 	return check_empty_space(woody);
 }

