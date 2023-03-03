@@ -28,6 +28,14 @@ FORCE:
 
 -include	$(SRCS:.c=.d)
 
+bonus:		$(OBJS) $(LIBFT)
+			nasm -f bin inject_bonus.s -o g_decryptor
+			xxd -i -c8 g_decryptor g_decryptor.c
+			gcc  -o Famine_bonus -L$(dir $(LIBFT)) -lft $(OBJS) $(LIBFT_OBJECTS)
+			@echo ""
+			@echo "▂▃▅▇█▓▒░ DONE ░▒▓█▇▅▃▂"
+			@echo ""
+
 clean:
 			make clean -C $(dir $(LIBFT))
 			$(RM) $(OBJS) $(SRCS:.c=.d)
