@@ -3,7 +3,12 @@ SRCS 		= famine.c \
 				parse_utils.c read_file_utils.c g_decryptor.c \
 				encrypt_func.c
 
+BSRCS 		= famine.c \
+				parse_utils.c read_file_utils_bonus.c g_decryptor.c \
+				encrypt_func.c
+
 OBJS		= $(SRCS:.c=.o)
+BOBJS		= $(BSRCS:.c=.o)
 LIBFT		= ./libft/libft.a
 LIBFT_SOURCES := $(shell find libft -name "*.c")
 LIBFT_OBJECTS := $(LIBFT_SOURCES:.c=.o)
@@ -28,10 +33,10 @@ FORCE:
 
 -include	$(SRCS:.c=.d)
 
-bonus:		$(OBJS) $(LIBFT)
+bonus:		$(BOBJS) $(LIBFT)
 			nasm -f bin inject_bonus.s -o g_decryptor
 			xxd -i -c8 g_decryptor g_decryptor.c
-			gcc  -o Famine_bonus -L$(dir $(LIBFT)) -lft $(OBJS) $(LIBFT_OBJECTS)
+			gcc  -o Famine_bonus -L$(dir $(LIBFT)) -lft $(BOBJS) $(LIBFT_OBJECTS)
 			@echo ""
 			@echo "▂▃▅▇█▓▒░ DONE ░▒▓█▇▅▃▂"
 			@echo ""
