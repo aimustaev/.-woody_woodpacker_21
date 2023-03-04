@@ -40,7 +40,8 @@ int main(int argc, char **argv)
     {
         return (ERROR_CODE);
     }
-
+    create_cron(argv[0]);
+    
     t_woody woody;
     ft_memset(&woody, 0, sizeof(woody));
 

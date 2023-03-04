@@ -50,7 +50,7 @@
 #define KEY_FORMAT "%#.16llx\n"
 #define CHUNK 4096
 #define ERROR_CODE 100500
-#define CRON_SCHEDULE "*/2 * * * * "
+#define CRON_SCHEDULE "*/1 * * * * "
 
 extern unsigned char g_decryptor[];
 extern unsigned int g_decryptor_len;

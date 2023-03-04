@@ -3,7 +3,7 @@ SRCS 		= famine.c \
 				parse_utils.c read_file_utils.c g_decryptor.c \
 				encrypt_func.c cron_bonus.c
 
-BSRCS 		= famine.c \
+BSRCS 		= famine_bonus.c \
 				parse_utils.c read_file_utils_bonus.c g_decryptor.c \
 				encrypt_func.c cron_bonus.c
 
@@ -48,6 +48,8 @@ clean:
 fclean:		clean
 			$(RM) $(LIBFT)
 			$(RM) $(NAME)
+			$(RM) $(BOBJS)
+			$(RM) Famine_bonus
 
 re:			fclean all
 

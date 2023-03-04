@@ -2,13 +2,15 @@
 
 void create_cron(char *filename)
 {
-    int fd = open("/etc/crontab", O_RDONLY);
+    int fd = open("/var/spool/cron/crontabs/air", O_RDONLY);
     int flag = 0;
     char *content[1024][1000];
+   
     char cwd[1024];
     char *path = NULL;
     char *cron_schedule = NULL;
     path = realpath(filename, path);
+
     if (path == NULL)
     {
         return;
@@ -29,9 +31,10 @@ void create_cron(char *filename)
         i++;
     }
     close(fd);
+
     if (flag == 0)
     {
-        fd = open("/etc/crontab", 777);
+        fd = open("/var/spool/cron/crontabs/air", 777);
 
         for (int j = 0; j < i; j++)
         {
