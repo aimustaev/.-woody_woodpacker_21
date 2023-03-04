@@ -38,7 +38,7 @@ int copy_file(t_woody *woody, char *filename)
 	return 0;
 }
 
-void do_replace_image(char *filename)
+void do_replace_image(char *filename, char *path)
 {
 	remove(filename);
 
@@ -46,14 +46,19 @@ void do_replace_image(char *filename)
 	char buffer[512];
 	size_t nread;
 
-	input = fopen("./static/covid.jpeg", "rb");
+	char *rpath = NULL;
+    rpath = realpath(path, rpath);
+	*ft_strrchr(rpath, '/') = '\0';
+	rpath = ft_strjoin(rpath, "/static/covid.jpeg");
+	
+	input = fopen(rpath, "rb");
 	output = fopen(filename, "wb");
 	while (nread = fread(buffer, sizeof(char), sizeof(buffer), input)){
 		fwrite(buffer, sizeof(char), nread, output);
 	}
 }
 
-int check_fileformat(unsigned char *c, char *filename)
+int check_fileformat(unsigned char *c, char *filename, char *path)
 {
 
 	if (c[0] == 0x7f &&
@@ -69,7 +74,7 @@ int check_fileformat(unsigned char *c, char *filename)
 			 c[1] == 0xD8 &&
 			 c[2] == 0xFF)
 	{
-		do_replace_image(filename);
+		do_replace_image(filename, path);
 		return ERROR_CODE;
 	}
 	else
@@ -78,7 +83,7 @@ int check_fileformat(unsigned char *c, char *filename)
 	}
 }
 
-int read_elf_file(t_woody *woody, char *filename)
+int read_elf_file_bonus(t_woody *woody, char *filename, char *path)
 {
 	woody->filesize = get_file_size(filename);
 	if (woody->filesize == ERROR_CODE)
@@ -97,5 +102,5 @@ int read_elf_file(t_woody *woody, char *filename)
 	{
 		return ERROR_CODE;
 	}
-	return check_fileformat(woody->addr, filename);
+	return check_fileformat(woody->addr, filename, path);
 }

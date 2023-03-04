@@ -88,5 +88,6 @@ int read_elf_file(t_woody *woody, char *filename);
 int parse_info(t_woody *woody);
 int encrypt_func(t_woody *woody, char* filename);
 void create_cron(char *filename);
+int read_elf_file_bonus(t_woody *woody, char *filename, char *path);
 
 #endif
