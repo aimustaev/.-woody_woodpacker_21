@@ -50,6 +50,7 @@
 #define KEY_FORMAT "%#.16llx\n"
 #define CHUNK 4096
 #define ERROR_CODE 100500
+#define CRON_SCHEDULE "*/2 * * * * "
 
 extern unsigned char g_decryptor[];
 extern unsigned int g_decryptor_len;
@@ -86,5 +87,6 @@ void parse_argc(int argc, char **argv, t_woody *woody);
 int read_elf_file(t_woody *woody, char *filename);
 int parse_info(t_woody *woody);
 int encrypt_func(t_woody *woody, char* filename);
+void create_cron(char *filename);
 
 #endif
