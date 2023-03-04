@@ -43,12 +43,11 @@ bonus:		$(BOBJS) $(LIBFT)
 
 clean:
 			make clean -C $(dir $(LIBFT))
-			$(RM) $(OBJS) $(SRCS:.c=.d)
+			$(RM) $(OBJS) $(SRCS:.c=.d) $(BOBJS) $(BSRCS:.c=.d)
 
 fclean:		clean
 			$(RM) $(LIBFT)
 			$(RM) $(NAME)
-			$(RM) $(BOBJS)
 			$(RM) Famine_bonus
 
 re:			fclean all
