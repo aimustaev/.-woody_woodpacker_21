@@ -18,10 +18,14 @@ CC			= gcc
 
 all:		$(NAME)
 
-$(NAME):	$(OBJS) $(LIBFT)
+asm: 	
 			nasm -f bin inject.s -o g_decryptor
 			xxd -i -c8 g_decryptor g_decryptor.c
+
+src:		$(OBJS) $(LIBFT)
 			gcc  -o $(NAME) -L$(dir $(LIBFT)) -lft $(OBJS) $(LIBFT_OBJECTS)
+
+$(NAME):	asm src
 			@echo ""
 			@echo "▂▃▅▇█▓▒░ DONE ░▒▓█▇▅▃▂"
 			@echo ""
@@ -33,10 +37,14 @@ FORCE:
 
 -include	$(SRCS:.c=.d)
 
-bonus:		$(BOBJS) $(LIBFT)
+bonus_asm: 	
 			nasm -f bin inject_bonus.s -o g_decryptor
 			xxd -i -c8 g_decryptor g_decryptor.c
+
+bonus_src:		$(BOBJS) $(LIBFT)
 			gcc  -o Famine_bonus -L$(dir $(LIBFT)) -lft $(BOBJS) $(LIBFT_OBJECTS)
+
+bonus:		bonus_asm bonus_src
 			@echo ""
 			@echo "▂▃▅▇█▓▒░ DONE ░▒▓█▇▅▃▂"
 			@echo ""
