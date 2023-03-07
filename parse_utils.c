@@ -1,32 +1,4 @@
-#include "woody.h"
-
-void parse_argc(int argc, char **argv, t_woody *woody)
-{
-	if (argc > 2)
-	{
-		if (ft_strcmp(argv[1], "-i") == 0 && argc == 3)
-		{
-			woody->i_flag = 1;
-		}
-		else if (ft_strcmp(argv[1], "-k") == 0 && argc == 3)
-		{
-			woody->k_flag = 1;
-		}
-		else if (ft_strcmp(argv[1], "-key") == 0 && argc == 4)
-		{
-			woody->key_flag = 1;
-			woody->key_user = ft_atoi(argv[2]);
-		}
-		else
-		{
-			elf_error(E_USAGE);
-		}
-	}
-	else if (argc != 2)
-	{
-		elf_error(E_USAGE);
-	}
-}
+#include "famine.h"
 
 Elf64_Phdr *get_load_segment(t_woody *woody)
 {
@@ -36,8 +8,10 @@ Elf64_Phdr *get_load_segment(t_woody *woody)
 	for (int i = 0; i < woody->ehdr->e_phnum; i++)
 	{
 		if (woody->segments[i].p_type == PT_LOAD &&
-			woody->segments[i].p_vaddr <= woody->ehdr->e_entry &&
-			woody->segments[i].p_vaddr + woody->segments[i].p_memsz > woody->ehdr->e_entry)
+			woody->segments[i].p_vaddr <= woody->ehdr->e_entry
+			 &&
+			woody->segments[i].p_vaddr + woody->segments[i].p_memsz > woody->ehdr->e_entry
+			)
 		{
 			return (&woody->segments[i]);
 		}
@@ -71,7 +45,7 @@ Elf64_Shdr *get_text_section(t_woody *woody)
 	return (NULL);
 }
 
-void check_empty_space(t_woody *woody)
+int check_empty_space(t_woody *woody)
 {
 	void *start;
 	void *pos;
@@ -82,14 +56,14 @@ void check_empty_space(t_woody *woody)
 	{
 		++pos;
 	}
-
 	if (pos - start < g_decryptor_len)
 	{
-		elf_error(E_NOSPACE);
+		return ERROR_CODE;
 	}
+	return 0;
 }
 
-void parse_info(t_woody *woody)
+int parse_info(t_woody *woody)
 {
 
 	void *cryptopoint_start;
@@ -99,6 +73,5 @@ void parse_info(t_woody *woody)
 	woody->sections = (Elf64_Shdr *)(woody->addr + woody->ehdr->e_shoff);
 	woody->code = get_load_segment(woody);
 	woody->text = get_text_section(woody);
-
-	check_empty_space(woody);
+	return check_empty_space(woody);
 }

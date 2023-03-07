@@ -1,4 +1,4 @@
-#include "woody.h"
+#include "famine.h"
 
 uint64_t generate_key()
 {
@@ -11,32 +11,6 @@ uint64_t generate_key()
 	}
 
 	return key;
-}
-
-uint64_t generate_urandom_key()
-{
-	int fd;
-	uint64_t key;
-	int len;
-	long long bar = 0;
-
-	fd = open("/dev/urandom", O_RDONLY);
-	if (fd < 0)
-	{
-		elf_error(E_KEY_GENERATOR);
-	}
-
-	while (bar == 0 || bar < 0)
-	{
-		if (read(fd, &bar, 8) == 0)
-		{
-			elf_error(E_KEY_GENERATOR);
-		}
-		key = (u_int64_t)bar;
-	}
-
-	close(fd);
-	return (key);
 }
 
 int change_load_segment(t_dset *dset, t_woody *woody)
@@ -70,48 +44,13 @@ void encrypt_text_section(t_woody *woody, void *data, uint64_t key)
 		value = value << 63;															  // 0 or -9223372036854775808
 		key = (key / 2) | value;														  // key = (key >> 1) | value;
 	}
-
-	if (woody->i_flag)
-	{
-		printf("\033[32mKEY:\033[0m ");
-	}
-	else if (woody->k_flag)
-	{
-		printf("\033[36mKEY:\033[0m ");
-	}
-	else if (woody->key_flag)
-	{
-		printf("\033[43mKEY:\033[0m ");
-	}
-	else
-	{
-		printf("\033[33mKEY:\033[0m ");
-	}
-	printf(KEY_FORMAT, (long long)key_copy);
-
-	printf("File create: woody\n");
-}
-
-uint64_t random_key()
-{
-	uint64_t key = 0;
-	int i;
-
-	srand(time(NULL));
-	for (i = 0; i < 16; i++)
-	{
-		key = (random() % 10) + key * 10;
-	}
-
-	return key;
 }
 
 int write_to_file(t_woody *woody)
 {
 	int fd;
 	ssize_t i;
-
-	fd = open("woody", O_WRONLY | O_CREAT | O_TRUNC, 0755);
+	fd = open(woody->filename, O_WRONLY | O_CREAT | O_TRUNC, 0755);
 	if (fd > 0)
 	{
 		i = 0;
@@ -120,13 +59,11 @@ int write_to_file(t_woody *woody)
 			write(fd, woody->addr + i, 1);
 			++i;
 		}
-
 		close(fd);
 	}
 	else
 	{
-		elf_error(E_WRITE_WOODY);
-		return (0);
+		return ERROR_CODE;
 	}
 	return (i == woody->filesize);
 }
@@ -140,7 +77,7 @@ uint64_t set_new_entry(t_woody *woody)
 	return (ehdr->e_entry);
 }
 
-void encrypt_func(t_woody *woody)
+int encrypt_func(t_woody *woody, char* filename)
 {
 
 	t_dset dset;
@@ -148,22 +85,7 @@ void encrypt_func(t_woody *woody)
 
 	data = woody->addr + woody->text->sh_offset;
 
-	if (woody->i_flag)
-	{
-		dset.key = random_key();
-	}
-	else if (woody->k_flag)
-	{
-		dset.key = generate_urandom_key();
-	}
-	else if (woody->key_flag)
-	{
-		dset.key = woody->key_user;
-	}
-	else
-	{
-		dset.key = generate_key();
-	}
+	dset.key = generate_key();
 
 	dset.original_entry = woody->ehdr->e_entry;
 	dset.encrypted_code = woody->text->sh_addr;
@@ -172,8 +94,11 @@ void encrypt_func(t_woody *woody)
 
 	encrypt_text_section(woody, data, dset.key);
 	change_load_segment(&dset, woody);
+	remove(filename); 
+	free(filename);
 	if (write_to_file(woody) != 1)
 	{
-		elf_error(E_WRITE_WOODY);
+		return ERROR_CODE;
 	}
+	return 0;
 }

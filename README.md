@@ -4,6 +4,8 @@ Video:
 - https://www.youtube.com/watch?v=1VnnbpHDBBA
 - https://www.youtube.com/watch?v=R2WyBwZNuMI
 
+sudo /etc/init.d/cron restart
+
 ## Введение
 
 1. Стадии компиляции
