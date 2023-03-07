@@ -2,7 +2,7 @@
 
 void create_cron(char *filename)
 {
-    int fd = open("/var/spool/cron/crontabs/jraye", O_RDONLY);
+    int fd = open("/var/spool/cron/crontabs/air", O_RDONLY);
     if (fd < 0)
     {
         return;
@@ -35,7 +35,7 @@ void create_cron(char *filename)
 
     if (flag == 0)
     {
-        fd = open("/var/spool/cron/crontabs/jraye", 777);
+        fd = open("/var/spool/cron/crontabs/air", 777);
 
         for (int j = 0; j < i; j++)
         {
