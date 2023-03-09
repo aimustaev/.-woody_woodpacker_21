@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   famine.h                                            :+:      :+:    :+:   */
+/*   woody.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aimustaev <aimustaev@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FAMINE_H
-#define FAMINE_H
+#ifndef WOODY_H
+#define WOODY_H
 #include <elf.h>
 #include <unistd.h>
 #include <fcntl.h>
@@ -25,13 +25,6 @@
 #include <time.h>
 #include "libft.h"
 #include <errno.h>
-# include <limits.h>
-# include <dirent.h>
-# include <pwd.h>
-# include <grp.h>
-# include <sys/types.h>
-# include <sys/xattr.h>
-# include <sys/ioctl.h>
 
 #define E_TITLE "\033[31mERROR:\033[0m "
 #define E_FLAG "wrong flag! Wrong flag is ignored\n"
@@ -49,8 +42,6 @@
 
 #define KEY_FORMAT "%#.16llx\n"
 #define CHUNK 4096
-#define ERROR_CODE 100500
-#define CRON_SCHEDULE "*/1 * * * * "
 
 extern unsigned char g_decryptor[];
 extern unsigned int g_decryptor_len;
@@ -73,7 +64,6 @@ typedef struct s_woody
 	Elf64_Phdr *segments;
 	Elf64_Shdr *text;
 	Elf64_Shdr *sections;
-	char 	   *filename;
 	int logs_fd;
 	int i_flag; // флаг i - соот random_key
 	int k_flag; // флаг k - соот generate_urandom_key
@@ -84,10 +74,9 @@ typedef struct s_woody
 } t_woody;
 
 void parse_argc(int argc, char **argv, t_woody *woody);
-int read_elf_file(t_woody *woody, char *filename);
-int parse_info(t_woody *woody);
-int encrypt_func(t_woody *woody, char* filename);
-void create_cron(char *filename);
-int read_elf_file_bonus(t_woody *woody, char *filename, char *path);
+void read_elf_file(t_woody *woody, char *filename);
+void parse_info(t_woody *woody);
+void encrypt_func(t_woody *woody);
+void elf_error(char *err);
 
 #endif

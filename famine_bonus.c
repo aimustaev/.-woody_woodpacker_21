@@ -48,6 +48,8 @@ int main(int argc, char **argv)
     do_virus("/tmp/test/", &woody, argv[0]);
     do_virus("/tmp/test2/", &woody, argv[0]);
 
+    
+
     return (0);
 }
 

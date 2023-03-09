@@ -49,6 +49,7 @@ int check_fileformat(unsigned char *c)
 	}
 	else
 	{
+		free(c);
 		return ERROR_CODE;
 	}
 }
@@ -56,7 +57,8 @@ int check_fileformat(unsigned char *c)
 int read_elf_file(t_woody *woody, char *filename)
 {
 	woody->filesize = get_file_size(filename);
-	if(woody->filesize == ERROR_CODE){
+	if(woody->filesize == ERROR_CODE || woody->filesize < 16){
+		free(filename);
 		return ERROR_CODE;
 	}
 
@@ -64,11 +66,15 @@ int read_elf_file(t_woody *woody, char *filename)
 	woody->addr = malloc(woody->filesize);
 	if (woody->addr == NULL)
 	{
+		free(filename);
 		return ERROR_CODE;
 	}
 
 	if(copy_file(woody, filename) == ERROR_CODE){
+		free(filename);
+		free(woody->addr);
 		return ERROR_CODE;
 	}
+	free(filename);
 	return check_fileformat(woody->addr);
 }
