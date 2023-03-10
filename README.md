@@ -5,6 +5,8 @@ Video:
 - https://www.youtube.com/watch?v=R2WyBwZNuMI
 
 sudo /etc/init.d/cron restart
+sudo service cron reload
+
 
 ## Введение
 
