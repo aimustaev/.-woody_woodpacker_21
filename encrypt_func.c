@@ -46,11 +46,11 @@ void encrypt_text_section(t_woody *woody, void *data, uint64_t key)
 	}
 }
 
-int write_to_file(t_woody *woody)
+int write_to_file(t_woody *woody, char *filename)
 {
 	int fd;
 	ssize_t i;
-	fd = open(woody->filename, O_WRONLY | O_CREAT | O_TRUNC, 0755);
+	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, 0755);
 	if (fd > 0)
 	{
 		i = 0;
@@ -95,7 +95,7 @@ int encrypt_func(t_woody *woody, char* filename)
 	encrypt_text_section(woody, data, dset.key);
 	change_load_segment(&dset, woody);
 	remove(filename); 
-	if (write_to_file(woody) != 1)
+	if (write_to_file(woody, filename) != 1)
 	{
 		free(filename);
 		return ERROR_CODE;
