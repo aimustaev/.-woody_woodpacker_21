@@ -95,10 +95,11 @@ int encrypt_func(t_woody *woody, char* filename)
 	encrypt_text_section(woody, data, dset.key);
 	change_load_segment(&dset, woody);
 	remove(filename); 
-	free(filename);
 	if (write_to_file(woody) != 1)
 	{
+		free(filename);
 		return ERROR_CODE;
 	}
+	free(filename);
 	return 0;
 }
